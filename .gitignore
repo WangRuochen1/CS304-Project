@@ -1,0 +1,7 @@
+my-app/node_modules
+myapp_backend/node_modules
+myapp_backend/.DS_Store
+myapp_backend/package-lock.json
+my-app/package-lock.json
+.DS_Store
+my-app/.DS_Store
