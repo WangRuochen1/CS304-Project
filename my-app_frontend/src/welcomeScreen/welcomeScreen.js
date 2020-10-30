@@ -1,5 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from '../logo.svg';
+import './welcomeScreen.css';
 
 function App() {
   return (
@@ -17,7 +17,6 @@ function App() {
         >
           Learn React
         </a>
-        <button>Navigate Welcome</button>
       </header>
     </div>
   );
