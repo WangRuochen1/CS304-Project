@@ -38,7 +38,19 @@
         <h2>Create haveDish Table Test</h2>
         <form method = "POST" action ="createTable.php">
         <input type="submit" name="createhaveDishTable"
-                class="button" value="createhaveDishTable" />
+                class="button" value="createhaveDishTable" /> 
+        </form>
+
+        <h2>Create Dish Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createDishTable"
+                class="button" value="createDishTable"/> 
+        </form>
+
+        <h2>Create Work_At Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createWorkAtTable"
+                class="button" value="createWorkAtTable"/> 
         </form>
 
 
@@ -277,6 +289,42 @@
                 
             OCICommit($db_conn);
         }
+
+        //create haveDish table
+        function createDishTable() {
+            global $db_conn;
+    
+            executePlainSQL("DROP TABLE Dish");
+
+            echo "<br> creating Dish table <br>";
+
+            executePlainSQL("CREATE TABLE Dish(
+                DishID		int,
+                ShopID		int,
+                status		char(1) NOT NULL,
+                name		char(30) NOT NULL,
+                allergy		char(50),
+                price		int NOT NULL,
+                CONSTRAINT Dish_pk PRIMARY KEY(DishID, ShopID))");
+                
+            OCICommit($db_conn);
+        }
+
+        //create WorkAt table
+        function createWorkAtTable() {
+            global $db_conn;
+    
+            executePlainSQL("DROP TABLE Work_At");
+
+            echo "<br> creating Work_At table <br>";
+
+            executePlainSQL("CREATE TABLE Work_At(
+                AddressID	int,
+                CourierID	int,
+                CONSTRAINT Work_At_pk PRIMARY KEY (AddressID, CourierID))");
+                
+            OCICommit($db_conn);
+        }
         
         function handleInsertRequest() {
             global $db_conn;
@@ -330,8 +378,12 @@
                     createCustomerTable();
                 } else if(array_key_exists('createOrderTable', $_POST)) {
                     createOrderTable();
-                }else if(array_key_exists('createhaveDishTable', $_POST)){
+                }else if(array_key_exists('createhaveDishTable', $_POST)) {
                     createhaveDishTable();
+                }else if(array_key_exists('createDishTable', $_POST)) {
+                    createDishTable();
+                }else if (array_key_exists('createWorkAtTable', $_POST)) {
+                    createWorkAtTable();
                 }
 
                 disconnectFromDB();
@@ -353,7 +405,8 @@
         }
 
         if (isset($_POST['reset']) || isset($_POST['updateSubmit']) || isset($_POST['insertSubmit']) || isset($_POST['createCustomerTable'])
-            ||isset($_POST['createOrderTable']) || isset($_POST['createhaveDishTable'])) {
+            ||isset($_POST['createOrderTable']) || isset($_POST['createhaveDishTable']) || isset($_POST['createDishTable'])
+            || isset($_POST['createWorkAtTable'])) {
             handlePOSTRequest();
         } else if (isset($_GET['countTupleRequest'])) {
             handleGETRequest();
