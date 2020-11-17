@@ -74,6 +74,8 @@
         </form>
 
     <hr />
+   
+
         <h2>Create Rate Table Test</h2>
         <form method = "POST" action ="createTable.php">
         <input type="submit" name="createRateTable"
@@ -95,6 +97,54 @@
         </form>
     <hr />
         <!--albert-->
+        <h2>Create Shop Table Test</h2>
+<form method = "POST" action ="createTable.php">
+    <input type="submit" name="createShopTable"
+    class="button" value="createShopTable"/>
+</form>
+<hr />
+<h2>Create Address Table Test</h2>
+<form method = "POST" action ="createTable.php">
+    <input type="submit" name="createAddressTable"
+    class="button" value="createAddressTable"/>
+</form>
+<hr />
+<h2>Create District Table Test</h2>
+<form method = "POST" action ="createTable.php">
+    <input type="submit" name="createDistrictTable"
+    class="button" value="createDistrictTable"/>
+</form>
+<hr />
+<h2>Create Time Table Test</h2>
+<form method = "POST" action ="createTable.php">
+    <input type="submit" name="createTimeTable"
+    class="button" value="createTimeTable"/>
+</form>
+<hr />
+<h2>Create Method Table Test</h2>
+<form method = "POST" action ="createTable.php">
+    <input type="submit" name="createMethodTable"
+    class="button" value="createMethodTable"/>
+</form>
+<hr />
+<h2>Create Golden Table Test</h2>
+<form method = "POST" action ="createTable.php">
+    <input type="submit" name="createGoldenTable"
+    class="button" value="createGoldenTable"/>
+</form>
+<hr />
+<h2>Create GDiscount Table Test</h2>
+<form method = "POST" action ="createTable.php">
+    <input type="submit" name="createGDiscountTable"
+    class="button" value="createGDiscountTable"/>
+</form>
+<hr />
+<h2>Create SDiscount Table Test</h2>
+<form method = "POST" action ="createTable.php">
+    <input type="submit" name="createSDiscountTable"
+    class="button" value="createSDiscountTable"/>
+</form>
+<hr />
 
         <!--copy paste-->
         <h2>Reset</h2>
@@ -144,6 +194,12 @@
         <form method="GET" action="createTable.php"> <!--refresh page when submitted-->
             <input type="hidden" id="DisplayContentRequest" name="DisplayContentRequest">
             <input type="submit" name="displayContent"></p>
+        </form>
+
+        <h2>Create Sliver Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createSilverTable"
+                class="button" value="createSilverTable"/> 
         </form>
 
         <?php
@@ -283,6 +339,10 @@
             OCICommit($db_conn);
         }
 
+        // CONSTRAINT fk_Rate
+        //      FOREIGN KEY (OrderID)
+        //      REFERENCES OrderTable(OrderID)
+        //      ON DELETE CASCADE
         /*CREATE TABLE FUNTIONS*/
 
         //create cumstomer table (customertable)
@@ -297,9 +357,13 @@
                             email    char(40),
                             phoneNum    char(10) NOT NULL,
                             password   char(8) NOT NULL)");
+
             OCICommit($db_conn);
         }
         
+        // CONSTRAINT fk_OrderTable
+        // FOREIGN KEY (TimeID,CourierID,CustomerID,AddressID,MethodID)
+        // REFERENCES TimeA(TimeID),Courier(CourierID),Customer(CustomerID),Address(AddressID),Method(MethodID)
         //create order table (created)
         function createOrderTable() {
             global $db_conn;
@@ -446,6 +510,150 @@
            
        OCICommit($db_conn);
    }
+
+   function createShopTable(){
+        global $db_conn;
+        executePlainSQL("DROP TABLE createShop");
+        echo "<br> creating new table <br>";
+        createAddressTable();
+        createTimeTable();
+        executePlainSQL("CREATE TABLE Shop (
+          ShopID	int PRIMARY KEY,
+          TimeID	int,
+          AddressID       int  NOT NULL,
+           name 		char(30) NOT NULL UNIQUE,
+       phoneNum	char(10) NOT NULL,
+       website	char(50),
+       password	char(8) NOT NULL
+--     <!-- FOREIGN KEY (AddressID) REFERENCE ADDRESS,
+-- 	ON DELETE  CASCADE
+-- 	ON UPDATE CASCADE
+-- FOREIGN KEY (TimeID) REFERENCE Time
+-- ON DELETE SET NULL
+-- 	ON UPDATE CASCADE -->
+      CONSTRAINT fk_Shop
+      FOREIGN KEY (AddressID)
+      REFERENCES  Address(AddressID)
+      ON DELETE CASCADE,
+      CONSTRAINT fk_TimeA
+      FOREIGN KEY (TimeID)
+      REFERENCES TimeA(TimeID)
+      ON DELETE SET NULL
+    )");
+    OCICommit($db_conn);
+    }
+
+
+    function createAddressTable(){
+        global $db_conn;
+        executePlainSQL("DROP TABLE Address");
+        echo "<br> creating new table <br>";
+        createAddressTable();
+        executePlainSQL("CREATE TABLE Address(
+            AddressID   int  NOT NULL PRIMARY KEY,
+            postalCode  char(6)  NOT NULL,
+            street            char(100) NOT NULL,
+            unit               char(20),
+-- // <!-- FOREIGN KEY(postalCode) REFERENCE District,
+-- // 	ON DELETE SET NULL
+-- // 	ON UPDATE CASCADE) -->
+        CONSTRAINT fk_Address
+        FOREIGN KEY(postalCode)
+        REFERENCES District(postalCode)
+        ON DELETE SET NULL
+        )");
+        OCICommit($db_conn);
+        }
+
+    function createDistrictTable(){
+        global $db_conn;
+        executePlainSQL("DROP TABLE District");
+        echo "<br> creating new table <br>";
+        executePlainSQL("CREATE TABLE District(
+          postalCode char(6) NOT NULL PRIMARY KEY,
+          province     char(40) NOT NULL,
+          city 	       char(40) NOT NULL)");
+        OCICommit($db_conn);
+    }
+
+
+    function createTimeTable(){
+        global $db_conn;
+        executePlainSQL("DROP TABLE TimeA");
+        echo "<br> creating new table <br>";
+        executePlainSQL("CREATE TABLE TimeA(
+         TimeID		int PRIMARY KEY,
+         startTime	TIMESTAMP NOT NULL,
+          endTime	TIMESTAMP NOT NULL
+        )");
+        OCICommit($db_conn);
+        }
+
+    function createMethodTable(){
+        global $db_conn;
+        executePlainSQL("DROP TABLE Method");
+        echo "<br> creating new table <br>";
+        executePlainSQL("CREATE TABLE Method(
+         MethodID   int PRIMARY KEY,
+         name           char(30) NOT NULL ,
+          CONSTRAINT method_unique UNIQUE (name)
+        )");
+        OCICommit($db_conn);
+    }
+
+    function createGoldenTable(){
+        global $db_conn;
+        executePlainSQL("DROP TABLE Golden");
+        echo "<br> creating new table <br>";
+        executePlainSQL("CREATE TABLE Golden(
+           CustomerID       int PRIMARY KEY,
+           level            int NOT NULL,
+           coupon           char(10),
+           credits          int NOT NULL
+       )");
+    OCICommit($db_conn);
+    }
+
+        function createGDiscountTable(){
+            global $db_conn;
+            executePlainSQL("DROP TABLE GDiscout");
+            echo "<br> creating new table <br>";
+            executePlainSQL("CREATE TABLE GDiscout(
+              level     int NOT NULL PRIMARY KEY,
+              discount  int
+        )");
+            OCICommit($db_conn);
+        }
+
+        function createSDiscountTable(){
+            global $db_conn;
+            executePlainSQL("DROP TABLE SDiscout");
+            echo "<br> creating new table <br>";
+            executePlainSQL("CREATE TABLE SDiscout(
+                  level     int NOT NULL PRIMARY KEY,
+                  discount  int
+                  )");
+            OCICommit($db_conn);
+        }
+
+        //create silver table
+        function createSilverTable() {
+            global $db_conn;
+
+            executePlainSQL("DROP TABLE SilverTABLE");
+
+            echo"<br> creating silverbtable <br>";
+            executePlainSQL("CREATE TABLE SilverTable(
+                CustomerID       int PRIMARY KEY,
+		        level            int NOT NULL,
+		        coupon           char(10),
+                credits          int NOT NULL)");
+    
+            OCICommit($db_conn);
+        }
+
+
+       
         
         function handleInsertRequest() {
             global $db_conn;
@@ -486,8 +694,6 @@
 
         }
 
-        /*ADD FOREIGN KEY TO EXISTING TABLE*/
-        
 
         // HANDLE ALL POST ROUTES
 	    // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
@@ -519,6 +725,24 @@
                     createEatAtTable();
                 }else if (array_key_exists('createWorkInTable', $_POST)) {
                     createWorkInTable();  
+                }else if (array_key_exists('createShopTable', $_POST)) {
+                    createShopTable();
+                }else if (array_key_exists('createAddressTable', $_POST)) {
+                    createAddressTable();
+                }else if (array_key_exists('createDistrictTable', $_POST)) {
+                    createDistrictTable();
+                }else if (array_key_exists('createTimeTable', $_POST)) {
+                    createTimeTable();
+                }else if (array_key_exists('createMethodTable', $_POST)) {
+                    createMethodTable();
+                }else if (array_key_exists('createGoldenTable', $_POST)) {
+                    createGoldenTable();
+                }else if (array_key_exists('createGDiscountTable', $_POST)) {
+                    createGDiscountTable();
+                }else if (array_key_exists('createSDiscountTable', $_POST)) {
+                    createSDiscountTable();
+                }else if (array_key_exists('createSilverTable', $_POST)) {
+                    createSilverTable();
                 }
 
                 disconnectFromDB();
@@ -542,7 +766,10 @@
         if (isset($_POST['reset']) || isset($_POST['updateSubmit']) || isset($_POST['insertSubmit']) || isset($_POST['createCustomerTable'])
             ||isset($_POST['createOrderTable']) || isset($_POST['createhaveDishTable']) || isset($_POST['createDishTable'])
             || isset($_POST['createWorkAtTable'])|| isset($_POST['createCourierTable']) || isset($_POST['createPaymentTable'])
-            || isset($_POST['createRateTable']) || isset($_POST['createEatAtTable']) || isset($_POST['createWorkInTable'])) {
+            || isset($_POST['createRateTable']) || isset($_POST['createEatAtTable']) || isset($_POST['createWorkInTable'])
+            || isset($_POST['createShopTable']) || isset($_POST['createAddressTable']) || isset($_POST['createDistrictTable'])
+            || isset($_POST['createTimeTable']) || isset($_POST['createMethodTable']) || isset($_POST['createGoldenTable'])
+            || isset($_POST['createGDiscountTable']) || isset($_POST['createSDiscountTable'])|| isset($_POST['createSilverTable']) ) {
             handlePOSTRequest();
         } else if (isset($_GET['countTupleRequest'])) {
             handleGETRequest();
