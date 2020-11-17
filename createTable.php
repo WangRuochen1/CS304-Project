@@ -29,17 +29,21 @@
                 class="button" value="createCustomerTable" />
         </form>
 
+    <hr />
         <h2>Create Order Table Test</h2>
         <form method = "POST" action ="createTable.php">
         <input type="submit" name="createOrderTable"
                 class="button" value="createOrderTable" />
         </form>
 
+    <hr />
         <h2>Create haveDish Table Test</h2>
         <form method = "POST" action ="createTable.php">
         <input type="submit" name="createhaveDishTable"
                 class="button" value="createhaveDishTable" /> 
         </form>
+
+    <hr />
 
         <h2>Create Dish Table Test</h2>
         <form method = "POST" action ="createTable.php">
@@ -47,14 +51,52 @@
                 class="button" value="createDishTable"/> 
         </form>
 
+    <hr />
         <h2>Create Work_At Table Test</h2>
         <form method = "POST" action ="createTable.php">
         <input type="submit" name="createWorkAtTable"
                 class="button" value="createWorkAtTable"/> 
         </form>
 
+    <hr />
+        <!--amber-->
+        <h2>Create Courier Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createCourierTable"
+                class="button" value="createCourierTable"/> 
+        </form>
+       
+    <hr />
+        <h2>Create Payment Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createPaymentTable"
+                class="button" value="createPaymentTable"/> 
+        </form>
 
+    <hr />
+        <h2>Create Rate Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createRateTable"
+                class="button" value="createRateTable"/> 
+        </form>
 
+    <hr />
+        <h2>Create Eat_At Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createEatAtTable"
+                class="button" value="createEatTable"/> 
+        </form>
+
+    <hr />
+        <h2>Create Work_In Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createWorkInTable"
+                class="button" value="createWorkInTable"/> 
+        </form>
+    <hr />
+        <!--albert-->
+
+        <!--copy paste-->
         <h2>Reset</h2>
         <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
 
@@ -179,6 +221,7 @@
             }
         }
 
+        /*print result*/
         function printResult($result) { //prints results from a select statement
             echo "<br>Retrieved data from table demoTable:<br>";
             echo "<table>";
@@ -191,6 +234,7 @@
             echo "</table>";
         }
 
+        /*connect to database*/ 
         function connectToDB() {
             global $db_conn;
 
@@ -238,6 +282,8 @@
             executePlainSQL("CREATE TABLE demoTable (id int PRIMARY KEY, name char(30))");
             OCICommit($db_conn);
         }
+
+        /*CREATE TABLE FUNTIONS*/
 
         //create cumstomer table (customertable)
         function createCustomerTable() {
@@ -290,7 +336,7 @@
             OCICommit($db_conn);
         }
 
-        //create haveDish table
+        //create Dish table
         function createDishTable() {
             global $db_conn;
     
@@ -325,6 +371,81 @@
                 
             OCICommit($db_conn);
         }
+
+        //create Courier table
+	      function createCourierTable() {
+            global $db_conn;
+            executePlainSQL("DROP TABLE Courier");
+
+            echo "<br> creating courier table <br>";
+            executePlainSQL("CREATE TABLE   Courier (
+                            CourierID       int PRIMARY KEY,
+                            name            char(30) NOT NULL,
+                            phoneNum        char(10) NOT NULL,
+                            password        char(8) NOT NULL)");
+
+           OCICommit($db_conn);
+       }
+
+          //create Payment table
+       function createPaymentTable() {
+             global $db_conn;
+             executePlainSQL("DROP TABLE Payment");
+         
+             echo "<br> creating Payment table <br>";
+             executePlainSQL("CREATE TABLE Payment(
+                 CustomerID    int,
+                 MethodID      int,
+                 CONSTRAINT Payment_pk PRIMARY KEY (CustomerID,MethodID))");
+               
+           OCICommit($db_conn);
+       }
+
+       //create Rate table
+       function createRateTable() {
+            global $db_conn;
+            executePlainSQL("DROP TABLE Rate");
+            echo "<br> creating Rate table <br>";
+
+           executePlainSQL("CREATE TABLE Rate(
+             RateID          int PRIMARY KEY,
+             OrderID         int NOT NULL,
+             content         char(1000) NOT NULL,
+             ranking         int NOT NULL)");
+    
+         OCICommit($db_conn);
+     }
+       
+     //create EatAt table
+     function createEatAtTable() {
+       global $db_conn;
+
+       executePlainSQL("DROP TABLE Eat_At");
+       echo "<br> creating Eat_At table <br>";
+
+       executePlainSQL("CREATE TABLE Eat_At(
+           CustomerID	int,
+           AddressID	int,
+           CONSTRAINT Eat_At_pk PRIMARY KEY (CustomerID, AddressID))");
+           
+       OCICommit($db_conn);
+   }
+
+
+     //create WorkIn table
+     function createWorkInTable() {
+       global $db_conn;
+
+       executePlainSQL("DROP TABLE Work_In");
+       echo "<br> creating Work_In table <br>";
+
+       executePlainSQL("CREATE TABLE Work_In(
+           CourierID	int,
+           TimeID	    int,
+           CONSTRAINT Work_In_pk PRIMARY KEY (CourierID, TimeID))");
+           
+       OCICommit($db_conn);
+   }
         
         function handleInsertRequest() {
             global $db_conn;
@@ -352,7 +473,8 @@
                 echo "<br> The number of tuples in demoTable: " . $row[0] . "<br>";
             }
         }
-//wang
+
+        /*DISPLAY CONTENT*/
         function handleDisplayRequest() {
             global $db_conn;
 
@@ -364,8 +486,11 @@
 
         }
 
+        /*ADD FOREIGN KEY TO EXISTING TABLE*/
+        
+
         // HANDLE ALL POST ROUTES
-	// A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
+	    // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
         function handlePOSTRequest() {
             if (connectToDB()) {
                 if (array_key_exists('resetTablesRequest', $_POST)) {
@@ -384,6 +509,16 @@
                     createDishTable();
                 }else if (array_key_exists('createWorkAtTable', $_POST)) {
                     createWorkAtTable();
+                }else if (array_key_exists('createCourierTable', $_POST)) {
+                    createCourierTable();
+                }else if (array_key_exists('createPaymentTable',$_POST)) {
+                    createPaymentTable();
+                }else if (array_key_exists('createRateTable', $_POST)) {
+                    createRateTable();
+                }else if (array_key_exists('createEatAtTable', $_POST)) {
+                    createEatAtTable();
+                }else if (array_key_exists('createWorkInTable', $_POST)) {
+                    createWorkInTable();  
                 }
 
                 disconnectFromDB();
@@ -391,7 +526,7 @@
         }
 
         // HANDLE ALL GET ROUTES
-	// A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
+	    // A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
         function handleGETRequest() {
             if (connectToDB()) {
                 if (array_key_exists('countTuples', $_GET)) {
@@ -406,7 +541,8 @@
 
         if (isset($_POST['reset']) || isset($_POST['updateSubmit']) || isset($_POST['insertSubmit']) || isset($_POST['createCustomerTable'])
             ||isset($_POST['createOrderTable']) || isset($_POST['createhaveDishTable']) || isset($_POST['createDishTable'])
-            || isset($_POST['createWorkAtTable'])) {
+            || isset($_POST['createWorkAtTable'])|| isset($_POST['createCourierTable']) || isset($_POST['createPaymentTable'])
+            || isset($_POST['createRateTable']) || isset($_POST['createEatAtTable']) || isset($_POST['createWorkInTable'])) {
             handlePOSTRequest();
         } else if (isset($_GET['countTupleRequest'])) {
             handleGETRequest();
