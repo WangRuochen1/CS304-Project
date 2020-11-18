@@ -96,55 +96,67 @@
                 class="button" value="createWorkInTable"/> 
         </form>
     <hr />
-        <!--albert-->
+
+
+
+    <!--albert-->
         <h2>Create Shop Table Test</h2>
-<form method = "POST" action ="createTable.php">
-    <input type="submit" name="createShopTable"
-    class="button" value="createShopTable"/>
-</form>
-<hr />
-<h2>Create Address Table Test</h2>
-<form method = "POST" action ="createTable.php">
-    <input type="submit" name="createAddressTable"
-    class="button" value="createAddressTable"/>
-</form>
-<hr />
-<h2>Create District Table Test</h2>
-<form method = "POST" action ="createTable.php">
-    <input type="submit" name="createDistrictTable"
-    class="button" value="createDistrictTable"/>
-</form>
-<hr />
-<h2>Create Time Table Test</h2>
-<form method = "POST" action ="createTable.php">
-    <input type="submit" name="createTimeTable"
-    class="button" value="createTimeTable"/>
-</form>
-<hr />
-<h2>Create Method Table Test</h2>
-<form method = "POST" action ="createTable.php">
-    <input type="submit" name="createMethodTable"
-    class="button" value="createMethodTable"/>
-</form>
-<hr />
-<h2>Create Golden Table Test</h2>
-<form method = "POST" action ="createTable.php">
-    <input type="submit" name="createGoldenTable"
-    class="button" value="createGoldenTable"/>
-</form>
-<hr />
-<h2>Create GDiscount Table Test</h2>
-<form method = "POST" action ="createTable.php">
-    <input type="submit" name="createGDiscountTable"
-    class="button" value="createGDiscountTable"/>
-</form>
-<hr />
-<h2>Create SDiscount Table Test</h2>
-<form method = "POST" action ="createTable.php">
-    <input type="submit" name="createSDiscountTable"
-    class="button" value="createSDiscountTable"/>
-</form>
-<hr />
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createShopTable"
+                class="button" value="createShopTable"/>
+        </form>
+    <hr />
+
+        <h2>Create Address Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createAddressTable"
+              class="button" value="createAddressTable"/>
+        </form>
+    <hr />
+
+
+        <h2>Create District Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createDistrictTable"
+        class="button" value="createDistrictTable"/>
+        </form>
+    <hr />
+
+        <h2>Create Time Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createTimeTable"
+        class="button" value="createTimeTable"/>
+        </form>
+    <hr />
+
+        <h2>Create Method Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createMethodTable"
+        class="button" value="createMethodTable"/>
+        </form>
+    <hr />
+
+        <h2>Create Golden Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createGoldenTable"
+        class="button" value="createGoldenTable"/>
+        </form>
+    <hr />
+
+        <h2>Create GDiscount Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createGDiscountTable"
+        class="button" value="createGDiscountTable"/>
+        </form>
+    <hr />
+
+
+        <h2>Create SDiscount Table Test</h2>
+        <form method = "POST" action ="createTable.php">
+        <input type="submit" name="createSDiscountTable"
+        class="button" value="createSDiscountTable"/>
+        </form>
+    <hr />
 
         <!--copy paste-->
         <h2>Reset</h2>
@@ -339,6 +351,81 @@
             OCICommit($db_conn);
         }
 
+
+        //create SDiscount table    
+        function createSDiscountTable(){
+            global $db_conn;
+            executePlainSQL("DROP TABLE SDiscout");
+
+        echo "<br> creating new table <br>";
+        executePlainSQL("CREATE TABLE SDiscout(
+            level     int NOT NULL PRIMARY KEY,
+            discount  int
+        )");
+            OCICommit($db_conn);
+        }
+
+
+        //create silver table
+        function createSilverTable() {
+            global $db_conn;
+            executePlainSQL("DROP TABLE SilverTABLE");
+
+        echo"<br> creating silverbtable <br>";
+        executePlainSQL("CREATE TABLE SilverTable(
+            CustomerID       int PRIMARY KEY,
+		    level            int NOT NULL,
+		    coupon           char(10),
+            credits          int NOT NULL)");
+    
+            OCICommit($db_conn);
+        }
+
+
+        function createGDiscountTable(){
+            global $db_conn;
+            executePlainSQL("DROP TABLE GDiscout");
+    
+            echo "<br> creating new table <br>";
+            executePlainSQL("CREATE TABLE GDiscout(
+                level     int NOT NULL PRIMARY KEY,
+                discount  int
+            )");
+                OCICommit($db_conn);
+            }
+
+
+        function createGoldenTable(){
+            global $db_conn;
+            executePlainSQL("DROP TABLE Golden");
+                
+            echo "<br> creating new table <br>";
+            executePlainSQL("CREATE TABLE Golden(
+                   CustomerID       int PRIMARY KEY,
+                   level            int NOT NULL,
+                   coupon           char(10),
+                   credits          int NOT NULL
+               )");
+            OCICommit($db_conn);
+            }   
+
+
+        function createMethodTable(){
+            global $db_conn;
+            executePlainSQL("DROP TABLE Method");
+
+            echo "<br> creating new table <br>";
+            executePlainSQL("CREATE TABLE Method(
+                 MethodID   int PRIMARY KEY,
+                 name           char(30) NOT NULL ,
+                CONSTRAINT method_unique UNIQUE (name)
+                )");
+                OCICommit($db_conn);
+            }
+        
+
+
+
         // CONSTRAINT fk_Rate
         //      FOREIGN KEY (OrderID)
         //      REFERENCES OrderTable(OrderID)
@@ -361,6 +448,216 @@
             OCICommit($db_conn);
         }
         
+
+        // CONSTRAINT fk_PaymentTable
+        // FOREIGN KEY (CustomerID, MethodID)
+        // REFERENCES Customer(CustomerID), Method(MethodID)
+        //create Payment table
+        function createPaymentTable() {
+            global $db_conn;
+            executePlainSQL("DROP TABLE Payment");
+        
+            echo "<br> creating Payment table <br>";
+            executePlainSQL("CREATE TABLE Payment(
+                CustomerID    int,
+                MethodID      int,
+                CONSTRAINT Payment_pk PRIMARY KEY (CustomerID,MethodID))");
+              
+          OCICommit($db_conn);
+      }
+
+
+
+        //create Courier table
+        function createCourierTable() {
+            global $db_conn;
+            executePlainSQL("DROP TABLE Courier");
+
+            echo "<br> creating courier table <br>";
+            executePlainSQL("CREATE TABLE   Courier (
+                CourierID       int PRIMARY KEY,
+                name            char(30) NOT NULL,
+                phoneNum        char(10) NOT NULL,
+                password        char(8) NOT NULL)");
+                
+                OCICommit($db_conn);
+            }
+
+
+        function createTimeATable(){
+            global $db_conn;
+            executePlainSQL("DROP TABLE TimeA");
+            
+            echo "<br> creating new table <br>";
+            executePlainSQL("CREATE TABLE TimeA(
+                TimeID		int PRIMARY KEY,
+                startTime	TIMESTAMP NOT NULL,
+                endTime	TIMESTAMP NOT NULL)");
+
+                OCICommit($db_conn);
+            }
+
+
+        function createDistrictTable(){
+            global $db_conn;
+            executePlainSQL("DROP TABLE District");
+            
+            echo "<br> creating new table <br>";
+            executePlainSQL("CREATE TABLE District(
+                postalCode char(6) NOT NULL PRIMARY KEY,
+                province     char(40) NOT NULL,
+                city 	       char(40) NOT NULL)");
+                
+                OCICommit($db_conn);
+            }
+
+
+        //create Address table
+        function createAddressTable(){
+            global $db_conn;
+        
+            executePlainSQL("DROP TABLE Address");
+            echo "<br> creating new table <br>";
+        
+            createAddressTable();
+            executePlainSQL("CREATE TABLE Address(
+                AddressID   int  NOT NULL PRIMARY KEY,
+                postalCode  char(6)  NOT NULL,
+                street            char(100) NOT NULL,
+                unit               char(20),
+        -- // <!-- FOREIGN KEY(postalCode) REFERENCE District,
+        -- // 	ON DELETE SET NULL
+        -- // 	ON UPDATE CASCADE) -->
+                CONSTRAINT fk_Address
+                FOREIGN KEY(postalCode)
+                REFERENCES District(postalCode)
+                ON DELETE SET NULL
+                )");
+                OCICommit($db_conn);
+                }
+
+
+
+
+        // CONSTRAINT fk_WorkIn
+        // FOREIGN KEY (CourierID, TimeID)
+        // REFERENCES Courier(CourierID), TimeA(TimeID)
+
+        //create WorkIn table
+        function createWorkInTable() {
+            global $db_conn;
+            executePlainSQL("DROP TABLE Work_In");
+       
+            echo "<br> creating Work_In table <br>";
+            executePlainSQL("CREATE TABLE Work_In(
+                CourierID	int,
+                TimeID	    int,
+                CONSTRAINT Work_In_pk PRIMARY KEY (CourierID, TimeID))");
+           
+            OCICommit($db_conn);
+   }
+
+
+
+        // CONSTRAINT fk_WorkAt
+        // FOREIGN KEY (AddressID, CourierID)
+        // REFERENCES Address(AddressID), Courier(CourierID)
+
+        //create WorkAt table
+        function createWorkAtTable() {
+            global $db_conn;
+    
+            executePlainSQL("DROP TABLE Work_At");
+
+            echo "<br> creating Work_At table <br>";
+
+            executePlainSQL("CREATE TABLE Work_At(
+                AddressID	int,
+                CourierID	int,
+                CONSTRAINT Work_At_pk PRIMARY KEY (AddressID, CourierID))");
+                
+            OCICommit($db_conn);
+        }
+
+
+
+
+        //create Shop table
+        function createShopTable(){
+            global $db_conn;
+    
+            executePlainSQL("DROP TABLE createShop");
+            echo "<br> creating new table <br>";
+    
+            createAddressTable();
+            createTimeATable();       //changed
+            executePlainSQL("CREATE TABLE Shop (
+               ShopID	     int PRIMARY KEY,
+               TimeID	     int,
+               AddressID     int  NOT NULL,
+               name 		 char(30) NOT NULL UNIQUE,
+               phoneNum	     char(10) NOT NULL,
+               website	     char(50),
+               password	     char(8) NOT NULL
+    --     <!-- FOREIGN KEY (AddressID) REFERENCE ADDRESS,
+    -- 	ON DELETE  CASCADE
+    -- 	ON UPDATE CASCADE
+    -- FOREIGN KEY (TimeID) REFERENCE Time
+    -- ON DELETE SET NULL
+    -- 	ON UPDATE CASCADE -->
+          CONSTRAINT fk_Shop
+          FOREIGN KEY (AddressID)
+          REFERENCES  Address(AddressID)
+          ON DELETE CASCADE,
+          CONSTRAINT fk_TimeA
+          FOREIGN KEY (TimeID)
+          REFERENCES TimeA(TimeID)
+          ON DELETE SET NULL
+        )");
+        OCICommit($db_conn);
+        }
+        
+        
+        //create Dish table
+        function createDishTable() {
+            global $db_conn;
+            executePlainSQL("DROP TABLE Dish");
+        
+            echo "<br> creating Dish table <br>";
+            executePlainSQL("CREATE TABLE Dish(
+                DishID		int,
+                ShopID		int,
+                status		char(1) NOT NULL,
+                name		char(30) NOT NULL,
+                allergy		char(50),
+                price		int NOT NULL,
+                CONSTRAINT Dish_pk PRIMARY KEY(DishID, ShopID))");
+                
+                OCICommit($db_conn);
+            }
+        
+
+        
+        // CONSTRAINT fk_EatAt
+        // FOREIGN KEY (CustomerID, AddressID)
+        // REFERENCES Customer(CustomerID), Address(AddressID)
+
+        //create EatAt table
+        function createEatAtTable() {
+            global $db_conn;
+            executePlainSQL("DROP TABLE Eat_At");
+       
+            echo "<br> creating Eat_At table <br>";
+            executePlainSQL("CREATE TABLE Eat_At(
+                CustomerID	int,
+                AddressID	int,
+                CONSTRAINT Eat_At_pk PRIMARY KEY (CustomerID, AddressID))");
+           
+            OCICommit($db_conn);
+   }
+                
+
+
         // CONSTRAINT fk_OrderTable
         // FOREIGN KEY (TimeID,CourierID,CustomerID,AddressID,MethodID)
         // REFERENCES TimeA(TimeID),Courier(CourierID),Customer(CustomerID),Address(AddressID),Method(MethodID)
@@ -383,6 +680,8 @@
             OCICommit($db_conn);
         }
 
+
+
         //create haveDish table
         function createhaveDishTable() {
             global $db_conn;
@@ -400,73 +699,9 @@
             OCICommit($db_conn);
         }
 
-        //create Dish table
-        function createDishTable() {
-            global $db_conn;
-    
-            executePlainSQL("DROP TABLE Dish");
 
-            echo "<br> creating Dish table <br>";
-
-            executePlainSQL("CREATE TABLE Dish(
-                DishID		int,
-                ShopID		int,
-                status		char(1) NOT NULL,
-                name		char(30) NOT NULL,
-                allergy		char(50),
-                price		int NOT NULL,
-                CONSTRAINT Dish_pk PRIMARY KEY(DishID, ShopID))");
-                
-            OCICommit($db_conn);
-        }
-
-        //create WorkAt table
-        function createWorkAtTable() {
-            global $db_conn;
-    
-            executePlainSQL("DROP TABLE Work_At");
-
-            echo "<br> creating Work_At table <br>";
-
-            executePlainSQL("CREATE TABLE Work_At(
-                AddressID	int,
-                CourierID	int,
-                CONSTRAINT Work_At_pk PRIMARY KEY (AddressID, CourierID))");
-                
-            OCICommit($db_conn);
-        }
-
-        //create Courier table
-	      function createCourierTable() {
-            global $db_conn;
-            executePlainSQL("DROP TABLE Courier");
-
-            echo "<br> creating courier table <br>";
-            executePlainSQL("CREATE TABLE   Courier (
-                            CourierID       int PRIMARY KEY,
-                            name            char(30) NOT NULL,
-                            phoneNum        char(10) NOT NULL,
-                            password        char(8) NOT NULL)");
-
-           OCICommit($db_conn);
-       }
-
-          //create Payment table
-       function createPaymentTable() {
-             global $db_conn;
-             executePlainSQL("DROP TABLE Payment");
-         
-             echo "<br> creating Payment table <br>";
-             executePlainSQL("CREATE TABLE Payment(
-                 CustomerID    int,
-                 MethodID      int,
-                 CONSTRAINT Payment_pk PRIMARY KEY (CustomerID,MethodID))");
-               
-           OCICommit($db_conn);
-       }
-
-       //create Rate table
-       function createRateTable() {
+        //create Rate table
+        function createRateTable() {
             global $db_conn;
             executePlainSQL("DROP TABLE Rate");
             echo "<br> creating Rate table <br>";
@@ -480,177 +715,295 @@
          OCICommit($db_conn);
      }
        
-     //create EatAt table
-     function createEatAtTable() {
-       global $db_conn;
 
-       executePlainSQL("DROP TABLE Eat_At");
-       echo "<br> creating Eat_At table <br>";
-
-       executePlainSQL("CREATE TABLE Eat_At(
-           CustomerID	int,
-           AddressID	int,
-           CONSTRAINT Eat_At_pk PRIMARY KEY (CustomerID, AddressID))");
-           
-       OCICommit($db_conn);
-   }
-
-
-     //create WorkIn table
-     function createWorkInTable() {
-       global $db_conn;
-
-       executePlainSQL("DROP TABLE Work_In");
-       echo "<br> creating Work_In table <br>";
-
-       executePlainSQL("CREATE TABLE Work_In(
-           CourierID	int,
-           TimeID	    int,
-           CONSTRAINT Work_In_pk PRIMARY KEY (CourierID, TimeID))");
-           
-       OCICommit($db_conn);
-   }
-
-   function createShopTable(){
-        global $db_conn;
-        executePlainSQL("DROP TABLE createShop");
-        echo "<br> creating new table <br>";
-        createAddressTable();
-        createTimeTable();
-        executePlainSQL("CREATE TABLE Shop (
-          ShopID	int PRIMARY KEY,
-          TimeID	int,
-          AddressID       int  NOT NULL,
-           name 		char(30) NOT NULL UNIQUE,
-       phoneNum	char(10) NOT NULL,
-       website	char(50),
-       password	char(8) NOT NULL
---     <!-- FOREIGN KEY (AddressID) REFERENCE ADDRESS,
--- 	ON DELETE  CASCADE
--- 	ON UPDATE CASCADE
--- FOREIGN KEY (TimeID) REFERENCE Time
--- ON DELETE SET NULL
--- 	ON UPDATE CASCADE -->
-      CONSTRAINT fk_Shop
-      FOREIGN KEY (AddressID)
-      REFERENCES  Address(AddressID)
-      ON DELETE CASCADE,
-      CONSTRAINT fk_TimeA
-      FOREIGN KEY (TimeID)
-      REFERENCES TimeA(TimeID)
-      ON DELETE SET NULL
-    )");
-    OCICommit($db_conn);
-    }
-
-
-    function createAddressTable(){
-        global $db_conn;
-        executePlainSQL("DROP TABLE Address");
-        echo "<br> creating new table <br>";
-        createAddressTable();
-        executePlainSQL("CREATE TABLE Address(
-            AddressID   int  NOT NULL PRIMARY KEY,
-            postalCode  char(6)  NOT NULL,
-            street            char(100) NOT NULL,
-            unit               char(20),
--- // <!-- FOREIGN KEY(postalCode) REFERENCE District,
--- // 	ON DELETE SET NULL
--- // 	ON UPDATE CASCADE) -->
-        CONSTRAINT fk_Address
-        FOREIGN KEY(postalCode)
-        REFERENCES District(postalCode)
-        ON DELETE SET NULL
-        )");
-        OCICommit($db_conn);
-        }
-
-    function createDistrictTable(){
-        global $db_conn;
-        executePlainSQL("DROP TABLE District");
-        echo "<br> creating new table <br>";
-        executePlainSQL("CREATE TABLE District(
-          postalCode char(6) NOT NULL PRIMARY KEY,
-          province     char(40) NOT NULL,
-          city 	       char(40) NOT NULL)");
-        OCICommit($db_conn);
-    }
-
-
-    function createTimeTable(){
-        global $db_conn;
-        executePlainSQL("DROP TABLE TimeA");
-        echo "<br> creating new table <br>";
-        executePlainSQL("CREATE TABLE TimeA(
-         TimeID		int PRIMARY KEY,
-         startTime	TIMESTAMP NOT NULL,
-          endTime	TIMESTAMP NOT NULL
-        )");
-        OCICommit($db_conn);
-        }
-
-    function createMethodTable(){
-        global $db_conn;
-        executePlainSQL("DROP TABLE Method");
-        echo "<br> creating new table <br>";
-        executePlainSQL("CREATE TABLE Method(
-         MethodID   int PRIMARY KEY,
-         name           char(30) NOT NULL ,
-          CONSTRAINT method_unique UNIQUE (name)
-        )");
-        OCICommit($db_conn);
-    }
-
-    function createGoldenTable(){
-        global $db_conn;
-        executePlainSQL("DROP TABLE Golden");
-        echo "<br> creating new table <br>";
-        executePlainSQL("CREATE TABLE Golden(
-           CustomerID       int PRIMARY KEY,
-           level            int NOT NULL,
-           coupon           char(10),
-           credits          int NOT NULL
-       )");
-    OCICommit($db_conn);
-    }
-
-        function createGDiscountTable(){
-            global $db_conn;
-            executePlainSQL("DROP TABLE GDiscout");
-            echo "<br> creating new table <br>";
-            executePlainSQL("CREATE TABLE GDiscout(
-              level     int NOT NULL PRIMARY KEY,
-              discount  int
-        )");
-            OCICommit($db_conn);
-        }
-
-        function createSDiscountTable(){
-            global $db_conn;
-            executePlainSQL("DROP TABLE SDiscout");
-            echo "<br> creating new table <br>";
-            executePlainSQL("CREATE TABLE SDiscout(
-                  level     int NOT NULL PRIMARY KEY,
-                  discount  int
-                  )");
-            OCICommit($db_conn);
-        }
-
-        //create silver table
-        function createSilverTable() {
-            global $db_conn;
-
-            executePlainSQL("DROP TABLE SilverTABLE");
-
-            echo"<br> creating silverbtable <br>";
-            executePlainSQL("CREATE TABLE SilverTable(
-                CustomerID       int PRIMARY KEY,
-		        level            int NOT NULL,
-		        coupon           char(10),
-                credits          int NOT NULL)");
+        //create Dish table
+        // function createDishTable() {
+        //     global $db_conn;
     
-            OCICommit($db_conn);
-        }
+        //     executePlainSQL("DROP TABLE Dish");
+
+        //     echo "<br> creating Dish table <br>";
+
+        //     executePlainSQL("CREATE TABLE Dish(
+        //         DishID		int,
+        //         ShopID		int,
+        //         status		char(1) NOT NULL,
+        //         name		char(30) NOT NULL,
+        //         allergy		char(50),
+        //         price		int NOT NULL,
+        //         CONSTRAINT Dish_pk PRIMARY KEY(DishID, ShopID))");
+                
+        //     OCICommit($db_conn);
+        // }
+
+        
+
+        // CONSTRAINT fk_WorkAt
+        // FOREIGN KEY (AddressID, CourierID)
+        // REFERENCES Address(AddressID), Courier(CourierID)
+
+        //create WorkAt table
+        // function createWorkAtTable() {
+        //     global $db_conn;
+    
+        //     executePlainSQL("DROP TABLE Work_At");
+
+        //     echo "<br> creating Work_At table <br>";
+
+        //     executePlainSQL("CREATE TABLE Work_At(
+        //         AddressID	int,
+        //         CourierID	int,
+        //         CONSTRAINT Work_At_pk PRIMARY KEY (AddressID, CourierID))");
+                
+        //     OCICommit($db_conn);
+        // }
+
+      
+
+
+        //create Courier table
+	//       function createCourierTable() {
+    //         global $db_conn;
+    //         executePlainSQL("DROP TABLE Courier");
+
+    //         echo "<br> creating courier table <br>";
+    //         executePlainSQL("CREATE TABLE   Courier (
+    //                         CourierID       int PRIMARY KEY,
+    //                         name            char(30) NOT NULL,
+    //                         phoneNum        char(10) NOT NULL,
+    //                         password        char(8) NOT NULL)");
+
+    //        OCICommit($db_conn);
+    //    }
+
+
+
+    
+
+
+        // CONSTRAINT fk_PaymentTable
+        // FOREIGN KEY (CustomerID, MethodID)
+        // REFERENCES Customer(CustomerID), Method(MethodID)
+        //create Payment table
+    //    function createPaymentTable() {
+    //          global $db_conn;
+    //          executePlainSQL("DROP TABLE Payment");
+         
+    //          echo "<br> creating Payment table <br>";
+    //          executePlainSQL("CREATE TABLE Payment(
+    //              CustomerID    int,
+    //              MethodID      int,
+    //              CONSTRAINT Payment_pk PRIMARY KEY (CustomerID,MethodID))");
+               
+    //        OCICommit($db_conn);
+    //    }
+
+
+
+       //create Rate table
+    //    function createRateTable() {
+    //         global $db_conn;
+    //         executePlainSQL("DROP TABLE Rate");
+    //         echo "<br> creating Rate table <br>";
+
+    //        executePlainSQL("CREATE TABLE Rate(
+    //          RateID          int PRIMARY KEY,
+    //          OrderID         int NOT NULL,
+    //          content         char(1000) NOT NULL,
+    //          ranking         int NOT NULL)");
+    
+    //      OCICommit($db_conn);
+    //  }
+       
+
+        // CONSTRAINT fk_EatAt
+        // FOREIGN KEY (CustomerID, AddressID)
+        // REFERENCES Customer(CustomerID), Address(AddressID)
+
+        //create EatAt table
+//         function createEatAtTable() {
+//             global $db_conn;
+//             executePlainSQL("DROP TABLE Eat_At");
+       
+//             echo "<br> creating Eat_At table <br>";
+//             executePlainSQL("CREATE TABLE Eat_At(
+//                 CustomerID	int,
+//                 AddressID	int,
+//                 CONSTRAINT Eat_At_pk PRIMARY KEY (CustomerID, AddressID))");
+           
+//             OCICommit($db_conn);
+//    }
+
+        // CONSTRAINT fk_WorkIn
+        // FOREIGN KEY (CourierID, TimeID)
+        // REFERENCES Courier(CourierID), TimeA(TimeID)
+
+        //create WorkIn table
+//         function createWorkInTable() {
+//             global $db_conn;
+//             executePlainSQL("DROP TABLE Work_In");
+       
+//             echo "<br> creating Work_In table <br>";
+//             executePlainSQL("CREATE TABLE Work_In(
+//                 CourierID	int,
+//                 TimeID	    int,
+//                 CONSTRAINT Work_In_pk PRIMARY KEY (CourierID, TimeID))");
+           
+//             OCICommit($db_conn);
+//    }
+
+
+ 
+//    function createShopTable(){
+//         global $db_conn;
+
+//         executePlainSQL("DROP TABLE createShop");
+//         echo "<br> creating new table <br>";
+
+//         createAddressTable();
+//         createTimeTable();
+//         executePlainSQL("CREATE TABLE Shop (
+//            ShopID	     int PRIMARY KEY,
+//            TimeID	     int,
+//            AddressID     int  NOT NULL,
+//            name 		 char(30) NOT NULL UNIQUE,
+//            phoneNum	     char(10) NOT NULL,
+//            website	     char(50),
+//            password	     char(8) NOT NULL
+// --     <!-- FOREIGN KEY (AddressID) REFERENCE ADDRESS,
+// -- 	ON DELETE  CASCADE
+// -- 	ON UPDATE CASCADE
+// -- FOREIGN KEY (TimeID) REFERENCE Time
+// -- ON DELETE SET NULL
+// -- 	ON UPDATE CASCADE -->
+//       CONSTRAINT fk_Shop
+//       FOREIGN KEY (AddressID)
+//       REFERENCES  Address(AddressID)
+//       ON DELETE CASCADE,
+//       CONSTRAINT fk_TimeA
+//       FOREIGN KEY (TimeID)
+//       REFERENCES TimeA(TimeID)
+//       ON DELETE SET NULL
+//     )");
+//     OCICommit($db_conn);
+//     }
+
+
+//     function createAddressTable(){
+//         global $db_conn;
+
+//         executePlainSQL("DROP TABLE Address");
+//         echo "<br> creating new table <br>";
+
+//         createAddressTable();
+//         executePlainSQL("CREATE TABLE Address(
+//             AddressID   int  NOT NULL PRIMARY KEY,
+//             postalCode  char(6)  NOT NULL,
+//             street            char(100) NOT NULL,
+//             unit               char(20),
+// -- // <!-- FOREIGN KEY(postalCode) REFERENCE District,
+// -- // 	ON DELETE SET NULL
+// -- // 	ON UPDATE CASCADE) -->
+//         CONSTRAINT fk_Address
+//         FOREIGN KEY(postalCode)
+//         REFERENCES District(postalCode)
+//         ON DELETE SET NULL
+//         )");
+//         OCICommit($db_conn);
+//         }
+
+
+    // function createDistrictTable(){
+    //     global $db_conn;
+    //     executePlainSQL("DROP TABLE District");
+    //     echo "<br> creating new table <br>";
+    //     executePlainSQL("CREATE TABLE District(
+    //       postalCode char(6) NOT NULL PRIMARY KEY,
+    //       province     char(40) NOT NULL,
+    //       city 	       char(40) NOT NULL)");
+    //     OCICommit($db_conn);
+    // }
+
+
+    // function createTimeTable(){
+    //     global $db_conn;
+    //     executePlainSQL("DROP TABLE TimeA");
+    //     echo "<br> creating new table <br>";
+    //     executePlainSQL("CREATE TABLE TimeA(
+    //      TimeID		int PRIMARY KEY,
+    //      startTime	TIMESTAMP NOT NULL,
+    //       endTime	TIMESTAMP NOT NULL
+    //     )");
+    //     OCICommit($db_conn);
+    //     }
+
+    // function createMethodTable(){
+    //     global $db_conn;
+    //     executePlainSQL("DROP TABLE Method");
+    //     echo "<br> creating new table <br>";
+    //     executePlainSQL("CREATE TABLE Method(
+    //      MethodID   int PRIMARY KEY,
+    //      name           char(30) NOT NULL ,
+    //       CONSTRAINT method_unique UNIQUE (name)
+    //     )");
+    //     OCICommit($db_conn);
+    // }
+
+    // function createGoldenTable(){
+    //     global $db_conn;
+    //     executePlainSQL("DROP TABLE Golden");
+    //     echo "<br> creating new table <br>";
+    //     executePlainSQL("CREATE TABLE Golden(
+    //        CustomerID       int PRIMARY KEY,
+    //        level            int NOT NULL,
+    //        coupon           char(10),
+    //        credits          int NOT NULL
+    //    )");
+    // OCICommit($db_conn);
+    // }
+
+        
+    // function createGDiscountTable(){
+    //     global $db_conn;
+    //     executePlainSQL("DROP TABLE GDiscout");
+
+    //     echo "<br> creating new table <br>";
+    //     executePlainSQL("CREATE TABLE GDiscout(
+    //         level     int NOT NULL PRIMARY KEY,
+    //         discount  int
+    //     )");
+    //         OCICommit($db_conn);
+    //     }
+
+
+    //create SDiscount table    
+    // function createSDiscountTable(){
+    //     global $db_conn;
+    //     executePlainSQL("DROP TABLE SDiscout");
+
+    //     echo "<br> creating new table <br>";
+    //     executePlainSQL("CREATE TABLE SDiscout(
+    //         level     int NOT NULL PRIMARY KEY,
+    //         discount  int
+    //     )");
+    //         OCICommit($db_conn);
+    //     }
+
+
+    //create silver table
+    // function createSilverTable() {
+    //     global $db_conn;
+    //     executePlainSQL("DROP TABLE SilverTABLE");
+
+    //     echo"<br> creating silverbtable <br>";
+    //     executePlainSQL("CREATE TABLE SilverTable(
+    //         CustomerID       int PRIMARY KEY,
+	// 	    level            int NOT NULL,
+	// 	    coupon           char(10),
+    //         credits          int NOT NULL)");
+    
+    //         OCICommit($db_conn);
+    //     }
 
 
        
@@ -732,7 +1085,7 @@
                 }else if (array_key_exists('createDistrictTable', $_POST)) {
                     createDistrictTable();
                 }else if (array_key_exists('createTimeTable', $_POST)) {
-                    createTimeTable();
+                    createTimeATable(); //changed
                 }else if (array_key_exists('createMethodTable', $_POST)) {
                     createMethodTable();
                 }else if (array_key_exists('createGoldenTable', $_POST)) {
